@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: API_Gatway
+  cloud:
+    gateway:
+          server:
+            webmvc:
+              routes:
+                - id: user_service
+                  uri: lb://USER_SERVICE
+                  predicates:
+                    - Path=/api/user/**
+                - id: product-service
+                  uri: lb://PRODUCT_SERVICE
+                  predicates:
+                    - Path=/api/product/**
+  boot:
+    admin:
+          client:
+            url: http://localhost:3333
+
+server:
+  port: 1111
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9999/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
